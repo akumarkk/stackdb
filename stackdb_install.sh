@@ -40,3 +40,12 @@ cd STACKDB_DIR
 tar xvfz Judy-1.0.5.tar.gz
 cd ./judy-1.0.5
 ./configure && make && make install
+
+cd STACKDB_DIR
+wget http://sourceforge.net/projects/gsoap2/files/gSOAP/gsoap_2.8.23.zip
+unzip gsoap_2.8.23.zip
+cd ./gsoap-2.8
+./configure && make && sudo make install
+
+
+cd STACKDB_DIR
