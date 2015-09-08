@@ -36,4 +36,7 @@ sudo cp -pv include/* /usr/local/include/
 
 
 cd STACKDB_DIR
-
+ wget http://sourceforge.net/projects/judy/files/judy/Judy-1.0.5/Judy-1.0.5.tar.gz
+tar xvfz Judy-1.0.5.tar.gz
+cd ./judy-1.0.5
+./configure && make && make install
