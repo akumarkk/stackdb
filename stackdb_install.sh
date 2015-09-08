@@ -26,3 +26,14 @@ cd elfutils-0.163
 ./configure --prefix=/opt/vmi/elfutils --with-zlib --with-bzlib \
         --enable-debugpred
 make && make install
+
+
+cd STACKDB_DIR
+git clone https://github.com/gdabah/distorm
+cd ./distorm/make/linux && make && sudo make install
+cd ../../
+sudo cp -pv include/* /usr/local/include/
+
+
+cd STACKDB_DIR
+
