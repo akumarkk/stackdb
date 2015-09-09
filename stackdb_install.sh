@@ -1,6 +1,6 @@
 
 sudo apt-get --assume-yes install byacc flex bison libssl-dev
-sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool
+sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
 sudo apt-get --assume-yes install pkg-config libusb-dev 
 sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
 sudo apt-get --assume-yes install libffi-dev
