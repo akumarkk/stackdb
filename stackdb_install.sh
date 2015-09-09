@@ -22,13 +22,14 @@ install_setuptools()
 
 
 if[ $# eq 0 ]
-    then
-        echo "Please stackdb base directory!!!";
+then
+    echo "Please stackdb base directory!!!";
 	exit -1;
 fi
 
 STACKDB_DIR=$1;
 install_setuptools();
+install_python_sudo();
 
 
 wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
@@ -68,8 +69,21 @@ cd ./gsoap-2.8
 ./configure && make && sudo make install
 
 
-cd STACKDB_DIR
- wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.4.tar.gz
-tar xvfz python-suds-0.4.tar.gz
-cd ./python-suds-0.4/
 
+install_python_sudo()
+{
+    cd STACKDB_DIR
+    wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.4.tar.gz
+    tar xvfz python-suds-0.4.tar.gz
+    cd python-suds-0.4 && python2 setup.py build && sudo python2 setup.py install
+    if [ $? -ne 0 ]
+    then
+        echo "Python sudo installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed Python Sudo";
+    fi
+
+    return 0;
+}
+    
