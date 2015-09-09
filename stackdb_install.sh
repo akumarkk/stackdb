@@ -1,10 +1,13 @@
 
-sudo apt-get --assume-yes install byacc flex bison libssl-dev
+sudo apt-get --assume-yes install byacc flex bison libssl-dev default-jre default-jdk
 sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
 sudo apt-get --assume-yes install pkg-config libusb-dev 
 sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
 sudo apt-get --assume-yes install libffi-dev
 sudo apt-get --assume-yes install libbz2-dev
+sudo apt-get --assume-yes install swig clips
+sudo apt-get build-dep clips
+
 
 #Install setup tools
 install_setuptools()
@@ -34,6 +37,7 @@ install_python_sudo();
 install_pysimplesoap($STACKDB_DIR);
 install_ant($STACKDB_DIR);
 install_axis($STACKDB_DIR);
+install_clipssrc($STACKDB_DIR);
 stackdb($STACKDB_DIR);
 
 
@@ -167,14 +171,29 @@ install_axis(install_dir)
     return 0;
 }
 
+install_clipssrc(install_dir)
+{
+    cd $install_dir;
+    sudo apt-get build-dep clips;
+    sudo apt-get source clips;
+    cd clips-6.24/;
+    sudo dpkg-buildpackage;
+
+    wget http://pkgs.fedoraproject.org/repo/pkgs/clips/clipssrc.tar.Z/ccba9d912375e57a1b7d9eba12da4198/clipssrc.tar.Z
+    tar xvfz clipssrc.tar.Z
+    sudo mv -r clipssrc /opt/
+}
+
 stackdb(install_dir)
 {
     cd $install_dir;
     cd vmi && autoconf && cd ..;
     mkdir vmi.obj && cd vmi.obj
     ../vmi/configure --prefix=/usr/local --with-glib=/opt/vmi/glib \
-            --with-elfutils=/opt/vmi/elfutils
+            --with-elfutils=/opt/vmi/elfutils 
+    ../vmi/configure --with-elfutils=/usr/local --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=~/Desktop/stackdb/clips-6.24/clipssrc/;
 
+    ../vmi/configure --with-elfutils=/opt/vmi/elfutils --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=~/Desktop/stackdb/clips-6.24/clipssrc/ --with-glib=/opt/vmi/glib;
     if [ $? -ne 0 ]
     then 
         echo "stackdb : Configure failed";
