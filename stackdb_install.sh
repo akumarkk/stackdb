@@ -1,6 +1,6 @@
 
 sudo apt-get --assume-yes install byacc flex bison libssl-dev
-sudo apt-get --assume-yes install pkg-config libusb-dev m4
+sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool
 sudo apt-get --assume-yes install pkg-config libusb-dev 
 sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
 sudo apt-get --assume-yes install libffi-dev
@@ -28,9 +28,13 @@ then
 fi
 
 STACKDB_DIR=$1;
+vmi($STACKDB_DIR);
 install_setuptools();
 install_python_sudo();
-install_pysimplesoap();
+install_pysimplesoap($STACKDB_DIR);
+install_ant($STACKDB_DIR);
+install_axis($STACKDB_DIR);
+stackdb($STACKDB_DIR);
 
 
 wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
@@ -129,5 +133,63 @@ install_pysimplesoap(install_dir)
         echo "PySimpleSoap installed successfully!";
     fi
     return 0;
+}
+
+install_ant(install_dir)
+{
+    cd $install_dir;
+    wget http://mirrors.koehn.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip;
+    unzip apache-ant-1.9.6-bin.zip
+    sudo mv -f apache-ant-1.9.6 /opt/
+
+    if [ $? -ne 0 ]
+    then
+        echo "PySimpleSoap installation failed!!!";
+        exit -1;
+    else
+        echo "PySimpleSoap installed successfully!";
+    fi
+    return 0;
+}
+
+install_axis(install_dir)
+{
+    cd $install_dir;
+    wget http://mirror.cogentco.com/pub/apache//axis/axis2/java/core/1.6.3/axis2-1.6.3-bin.zip;
+    sudo unzip axis2-*-bin.zip -d /opt/
+    if [ $? -ne 0 ]
+    then
+        echo "Axis installation failed!!!";
+        exit -1;
+    else
+        echo "Axis installed successfully!";
+    fi
+    return 0;
+}
+
+stackdb(install_dir)
+{
+    cd $install_dir;
+    cd vmi && autoconf && cd ..;
+    mkdir vmi.obj && cd vmi.obj
+    ../vmi/configure --prefix=/usr/local --with-glib=/opt/vmi/glib \
+            --with-elfutils=/opt/vmi/elfutils
+
+    if [ $? -ne 0 ]
+    then 
+        echo "stackdb : Configure failed";
+        exit -1;
+    else
+        echo "Successfully configured stackdb";
+    fi
+
+    make && sudo make install;
+    if [ $? -ne 0 ]
+    then
+        echo "stackdb : make failed";
+        exit -1;
+    else
+        echo "Successfully build stackdb";
+    fi
 }
 
