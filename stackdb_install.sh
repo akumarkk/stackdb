@@ -1,17 +1,35 @@
 
-sudo apt-get install byacc flex bison libssl-dev
+sudo apt-get --assume-yes install byacc flex bison libssl-dev
 sudo apt-get --assume-yes install pkg-config libusb-dev m4
 sudo apt-get --assume-yes install pkg-config libusb-dev 
 sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
 sudo apt-get --assume-yes install libffi-dev
 sudo apt-get --assume-yes install libbz2-dev
 
-STACKDB_DIR=$1
+#Install setup tools
+install_setuptools()
+{
+    wget --no-check-certificate https://bootstrap.pypa.io/ez_setup.py -O - | sudo python
+    if[ $? -ne 0 ];
+    then
+        echo "setuptools installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed setuptools!";
+    fi
+    return 0;
+}
+
+
 if[ $# eq 0 ]
     then
         echo "Please stackdb base directory!!!";
 	exit -1;
 fi
+
+STACKDB_DIR=$1;
+install_setuptools();
+
 
 wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
 tar xvf glib-2.45.7.tar.xz
@@ -51,3 +69,7 @@ cd ./gsoap-2.8
 
 
 cd STACKDB_DIR
+ wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.4.tar.gz
+tar xvfz python-suds-0.4.tar.gz
+cd ./python-suds-0.4/
+
