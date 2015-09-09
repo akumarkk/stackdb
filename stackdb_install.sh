@@ -112,11 +112,22 @@ install_pysimplesoap(install_dir)
     if [ $ret_wget -ne 0 ] || [ $ret_patch -ne 0 ]
     then 
         echo "pySimpleSoap or Patching to pySimpleSoap failed!";
-        exit -1;
+        #exit -1;
     else
         echo "Successfully installed pySimpleSoap";
     fi
 
+    unzip PySimpleSOAP-1.10.zip
+    cd $insatll_dir/PySimpleSOAP-1.10
+    python2 setup.py build && sudo python2 setup.py install
+
+    if [ $? -ne 0 ]
+    then
+        echo "PySimpleSoap installation failed!!!";
+        exit -1;
+    else
+        echo "PySimpleSoap installed successfully!";
+    fi
     return 0;
 }
 
