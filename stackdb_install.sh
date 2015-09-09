@@ -30,6 +30,7 @@ fi
 STACKDB_DIR=$1;
 install_setuptools();
 install_python_sudo();
+install_pysimplesoap();
 
 
 wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
@@ -86,4 +87,36 @@ install_python_sudo()
 
     return 0;
 }
-    
+
+
+vmi(insatall_dir)
+{
+    git clone http://git-public.flux.utah.edu/git/a3/vmi.git
+    if [ $? -ne 0 ]
+    then 
+        echo "failed to clone vmi!!!";
+        exit -1;
+    else
+        echo "Cloned VMI successfully!";
+    fi
+    return 0;
+}
+
+install_pysimplesoap(install_dir)
+{
+    cd $install_dir;
+    wget https://pysimplesoap.googlecode.com/files/PySimpleSOAP-1.10.zip
+    ret_wget=$?
+    patch -p1 < $install_dir/vmi/xml/etc/pysimplesoap-soap-env.patch
+    ret_patch=$?
+    if [ $ret_wget -ne 0 ] || [ $ret_patch -ne 0 ]
+    then 
+        echo "pySimpleSoap or Patching to pySimpleSoap failed!";
+        exit -1;
+    else
+        echo "Successfully installed pySimpleSoap";
+    fi
+
+    return 0;
+}
+
