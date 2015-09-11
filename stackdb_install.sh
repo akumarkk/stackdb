@@ -256,9 +256,10 @@ install_clipssrc()
     cd clips-6.24/;
     sudo dpkg-buildpackage;
 
+    cd $STACKDB_DIR;
     wget http://pkgs.fedoraproject.org/repo/pkgs/clips/clipssrc.tar.Z/ccba9d912375e57a1b7d9eba12da4198/clipssrc.tar.Z
     tar xvfz clipssrc.tar.Z
-    sudo mv -r clipssrc /opt/
+    sudo mv -f clipssrc /opt/
 }
 
 stackdb()
@@ -266,9 +267,6 @@ stackdb()
     cd $STACKDB_DIR;
     cd vmi && autoconf && cd ..;
     mkdir vmi.obj && cd vmi.obj
-    ../vmi/configure --prefix=/usr/local --with-glib=/opt/vmi/glib \
-            --with-elfutils=/opt/vmi/elfutils 
-    ../vmi/configure --with-elfutils=/usr/local --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=~/Desktop/stackdb/clips-6.24/clipssrc/;
 
     ../vmi/configure --with-elfutils=/opt/vmi/elfutils --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=~/Desktop/stackdb/clips-6.24/clipssrc/ --with-glib=/opt/vmi/glib;
     if [ $? -ne 0 ]
