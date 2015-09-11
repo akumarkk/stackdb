@@ -30,7 +30,7 @@ build_stackdb()
 {
     if [ $# -eq 0 ]
     then
-        echo "Please stackdb base directory!!!";
+        echo "Please stackdb base directory!!!" >&2;
 	    exit -1;
     fi
 
@@ -145,10 +145,10 @@ install_gsoap()
     ./configure && make && sudo make install
     if [ $? -ne 0 ]
     then
-        echo "Python sudo installation failed!!!";
+        echo "Gsoap installation failed!!!";
         exit -1;
     else
-        echo "Successfully installed Python Sudo";
+        echo "Successfully installed Gsoap";
     fi
 
     return 0;
@@ -175,7 +175,7 @@ install_python_sudo()
 
 vmi()
 {
-    cd $STACKDb_DIR;
+    cd $STACKDB_DIR;
     git clone http://git-public.flux.utah.edu/git/a3/vmi.git
     if [ $? -ne 0 ]
     then 
@@ -294,4 +294,9 @@ then
     echo "Stackdn directory not supplied";
     exit -1;
 fi
+echo "Building stackdb...";
+log_file=$1/stackdb.log
+echo "logfile : $log_file";
+exec > $log_file;
+
 build_stackdb $1;
