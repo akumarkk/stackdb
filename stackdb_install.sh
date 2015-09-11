@@ -1,19 +1,22 @@
-
-sudo apt-get --assume-yes install byacc flex bison libssl-dev default-jre default-jdk
-sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
-sudo apt-get --assume-yes install pkg-config libusb-dev 
-sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
-sudo apt-get --assume-yes install libffi-dev
-sudo apt-get --assume-yes install libbz2-dev
-sudo apt-get --assume-yes install swig clips
-sudo apt-get build-dep clips
+#Install all the necessary utils
+install_utils()
+{
+	sudo apt-get --assume-yes install byacc flex bison libssl-dev default-jre default-jdk
+	sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
+	sudo apt-get --assume-yes install pkg-config libusb-dev 
+	sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
+	sudo apt-get --assume-yes install libffi-dev
+	sudo apt-get --assume-yes install libbz2-dev
+	sudo apt-get --assume-yes install swig clips
+	sudo apt-get --assume-yes build-dep clips
+}
 
 
 #Install setup tools
 install_setuptools()
 {
     wget --no-check-certificate https://bootstrap.pypa.io/ez_setup.py -O - | sudo python
-    if[ $? -ne 0 ];
+    if [ $? -ne 0 ];
     then
         echo "setuptools installation failed!!!";
         exit -1;
@@ -24,14 +27,16 @@ install_setuptools()
 }
 
 
-if[ $# eq 0 ]
+if [ $# eq 0 ]
 then
     echo "Please stackdb base directory!!!";
 	exit -1;
 fi
 
 STACKDB_DIR=$1;
+cd $STACKDb_DIR;
 vmi($STACKDB_DIR);
+install_utils();
 install_setuptools();
 install_python_sudo();
 install_pysimplesoap($STACKDB_DIR);
