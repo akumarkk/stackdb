@@ -26,62 +26,133 @@ install_setuptools()
     return 0;
 }
 
+build_stackdb()
+{
+    if [ $# -eq 0 ]
+    then
+        echo "Please stackdb base directory!!!";
+	    exit -1;
+    fi
 
-if [ $# eq 0 ]
-then
-    echo "Please stackdb base directory!!!";
-	exit -1;
-fi
+    STACKDB_DIR=$1;
+    cd $STACKDb_DIR;
+    install_glib;
+    install_elfutils;
+    install_judy;
+    install_gsoap;
+    vmi;
+    install_utils;
+    install_setuptools;
+    install_python_sudo;
+    install_pysimplesoap;
+    install_ant;
+    install_axis;
+    install_clipssrc;
+    stackdb;
+}
 
-STACKDB_DIR=$1;
-cd $STACKDb_DIR;
-vmi($STACKDB_DIR);
-install_utils();
-install_setuptools();
-install_python_sudo();
-install_pysimplesoap($STACKDB_DIR);
-install_ant($STACKDB_DIR);
-install_axis($STACKDB_DIR);
-install_clipssrc($STACKDB_DIR);
-stackdb($STACKDB_DIR);
 
+install_glib()
+{
+    cd $STACKDB_DIR;
+    wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
+    tar xvf glib-2.45.7.tar.xz
+    cd glib-2.45.7
+    ./configure --prefix=/opt/vmi/glib
+    make && make install
+    if [ $? -ne 0 ]
+    then
+        echo "glib installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed glib";
+    fi
 
-wget http://ftp.acc.umu.se/pub/gnome/sources/glib/2.45/glib-2.45.7.tar.xz
-tar xvf glib-2.45.7.tar.xz
-cd glib-2.45.7
-./configure --prefix=/opt/vmi/glib
-make && make install
+    return 0;
+}
+
 
 
 #
-cd STACKDB_DIR
-wget https://fedorahosted.org/releases/e/l/elfutils/0.163/elfutils-0.163.tar.bz2 --no-check-certificate
-tar xvfj elfutils-0.163.tar.bz2
-cd elfutils-0.163
-./configure --prefix=/opt/vmi/elfutils --with-zlib --with-bzlib \
+install_elfutils()
+{
+    cd $STACKDB_DIR
+    wget https://fedorahosted.org/releases/e/l/elfutils/0.163/elfutils-0.163.tar.bz2 --no-check-certificate
+    tar xvfj elfutils-0.163.tar.bz2
+    cd elfutils-0.163
+    ./configure --prefix=/opt/vmi/elfutils --with-zlib --with-bzlib \
         --enable-debugpred
-make && make install
+    make && make install
+    if [ $? -ne 0 ]
+    then
+        echo "elfutils installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed elfutils";
+    fi
+
+    return 0;
+}
 
 
-cd STACKDB_DIR
-git clone https://github.com/gdabah/distorm
-cd ./distorm/make/linux && make && sudo make install
-cd ../../
-sudo cp -pv include/* /usr/local/include/
+
+install_distorm()
+{
+
+    cd $STACKDB_DIR
+    git clone https://github.com/gdabah/distorm
+    cd ./distorm/make/linux && make && sudo make install
+    cd ../../
+    sudo cp -pv include/* /usr/local/include/
+    
+    if [ $? -ne 0 ]
+    then
+        echo "Distorm installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed Distorm";
+    fi
+
+    return 0;
+}
 
 
-cd STACKDB_DIR
- wget http://sourceforge.net/projects/judy/files/judy/Judy-1.0.5/Judy-1.0.5.tar.gz
-tar xvfz Judy-1.0.5.tar.gz
-cd ./judy-1.0.5
-./configure && make && make install
+install_judy()
+{
+    cd $STACKDB_DIR
+    wget http://sourceforge.net/projects/judy/files/judy/Judy-1.0.5/Judy-1.0.5.tar.gz
+    tar xvfz Judy-1.0.5.tar.gz
+    cd ./judy-1.0.5
+    ./configure && make && make install
+    if [ $? -ne 0 ]
+    then
+        echo "Judy sudo installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed Judy";
+    fi
 
-cd STACKDB_DIR
-wget http://sourceforge.net/projects/gsoap2/files/gSOAP/gsoap_2.8.23.zip
-unzip gsoap_2.8.23.zip
-cd ./gsoap-2.8
-./configure && make && sudo make install
+    return 0;
+}
 
+
+install_gsoap()
+{
+    cd $STACKDB_DIR
+    wget http://sourceforge.net/projects/gsoap2/files/gSOAP/gsoap_2.8.23.zip
+    unzip gsoap_2.8.23.zip
+    cd ./gsoap-2.8
+    ./configure && make && sudo make install
+    if [ $? -ne 0 ]
+    then
+        echo "Python sudo installation failed!!!";
+        exit -1;
+    else
+        echo "Successfully installed Python Sudo";
+    fi
+
+    return 0;
+}
 
 
 install_python_sudo()
@@ -102,8 +173,9 @@ install_python_sudo()
 }
 
 
-vmi(insatall_dir)
+vmi()
 {
+    cd $STACKDb_DIR;
     git clone http://git-public.flux.utah.edu/git/a3/vmi.git
     if [ $? -ne 0 ]
     then 
@@ -115,9 +187,9 @@ vmi(insatall_dir)
     return 0;
 }
 
-install_pysimplesoap(install_dir)
+install_pysimplesoap()
 {
-    cd $install_dir;
+    cd $STACKDB_DIR;
     wget https://pysimplesoap.googlecode.com/files/PySimpleSOAP-1.10.zip
     ret_wget=$?
     patch -p1 < $install_dir/vmi/xml/etc/pysimplesoap-soap-env.patch
@@ -144,9 +216,9 @@ install_pysimplesoap(install_dir)
     return 0;
 }
 
-install_ant(install_dir)
+install_ant()
 {
-    cd $install_dir;
+    cd $STACKDB_DIR;
     wget http://mirrors.koehn.com/apache//ant/binaries/apache-ant-1.9.6-bin.zip;
     unzip apache-ant-1.9.6-bin.zip
     sudo mv -f apache-ant-1.9.6 /opt/
@@ -161,9 +233,9 @@ install_ant(install_dir)
     return 0;
 }
 
-install_axis(install_dir)
+install_axis()
 {
-    cd $install_dir;
+    cd $STACKDB_DIR;
     wget http://mirror.cogentco.com/pub/apache//axis/axis2/java/core/1.6.3/axis2-1.6.3-bin.zip;
     sudo unzip axis2-*-bin.zip -d /opt/
     if [ $? -ne 0 ]
@@ -176,9 +248,9 @@ install_axis(install_dir)
     return 0;
 }
 
-install_clipssrc(install_dir)
+install_clipssrc()
 {
-    cd $install_dir;
+    cd $STACKDB_DIR;
     sudo apt-get build-dep clips;
     sudo apt-get source clips;
     cd clips-6.24/;
@@ -189,9 +261,9 @@ install_clipssrc(install_dir)
     sudo mv -r clipssrc /opt/
 }
 
-stackdb(install_dir)
+stackdb()
 {
-    cd $install_dir;
+    cd $STACKDB_DIR;
     cd vmi && autoconf && cd ..;
     mkdir vmi.obj && cd vmi.obj
     ../vmi/configure --prefix=/usr/local --with-glib=/opt/vmi/glib \
@@ -217,3 +289,9 @@ stackdb(install_dir)
     fi
 }
 
+if [ $# -lt 2 ]
+then
+    echo "Stackdn directory not supplied";
+    exit -1;
+fi
+build_stackdb $1;
