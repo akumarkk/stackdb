@@ -59,7 +59,7 @@ install_glib()
     tar xvf glib-2.45.7.tar.xz
     cd glib-2.45.7
     ./configure --prefix=/opt/vmi/glib
-    make && make install
+    make && sudo make install
     if [ $? -ne 0 ]
     then
         echo "glib installation failed!!!";
@@ -82,7 +82,7 @@ install_elfutils()
     cd elfutils-0.163
     ./configure --prefix=/opt/vmi/elfutils --with-zlib --with-bzlib \
         --enable-debugpred
-    make && make install
+    make && sudo make install
     if [ $? -ne 0 ]
     then
         echo "elfutils installation failed!!!";
@@ -123,7 +123,7 @@ install_judy()
     wget http://sourceforge.net/projects/judy/files/judy/Judy-1.0.5/Judy-1.0.5.tar.gz
     tar xvfz Judy-1.0.5.tar.gz
     cd ./judy-1.0.5
-    ./configure && make && make install
+    ./configure && make && sudo make install
     if [ $? -ne 0 ]
     then
         echo "Judy sudo installation failed!!!";
@@ -203,7 +203,7 @@ install_pysimplesoap()
     fi
 
     unzip PySimpleSOAP-1.10.zip
-    cd $insatll_dir/PySimpleSOAP-1.10
+    cd $STACKDB_DIR/PySimpleSOAP-1.10
     python2 setup.py build && sudo python2 setup.py install
 
     if [ $? -ne 0 ]
@@ -289,7 +289,7 @@ stackdb()
     fi
 }
 
-if [ $# -lt 2 ]
+if [ $# -lt 1 ]
 then
     echo "Stackdn directory not supplied";
     exit -1;
