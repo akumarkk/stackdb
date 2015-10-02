@@ -269,7 +269,8 @@ stackdb()
     cd vmi && autoconf && cd ..;
     mkdir vmi.obj && cd vmi.obj
 
-    ../vmi/configure --with-elfutils=/opt/vmi/elfutils --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=~/Desktop/stackdb/clips-6.24/clipssrc/ --with-glib=/opt/vmi/glib;
+    ../vmi/configure --with-elfutils=/opt/vmi/elfutils --disable-xenaccess --enable-asm --with-clipssrc=$STACKDB_DIR/clips-6.24/clipssrc/ --with-glib=/opt/vmi/glib;
+    #../vmi/configure --with-elfutils=/opt/vmi/elfutils --with-libvmi=/usr/local --disable-xenaccess --enable-libvmi --enable-soap --enable-asm --with-clipssrc=$STACKDB_DIR/clips-6.24/clipssrc/ --with-glib=/opt/vmi/glib;
     if [ $? -ne 0 ]
     then 
         echo "stackdb : Configure failed";
