@@ -49,6 +49,7 @@ build_stackdb()
     install_ant;
     install_axis;
     install_clipssrc;
+    install_distorm;
     stackdb;
 }
 
