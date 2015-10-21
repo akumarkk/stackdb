@@ -2,7 +2,9 @@
 install_utils()
 {
 	sudo apt-get --assume-yes update 
-	sudo apt-get --assume-yes upgrade
+	# This does not come with default option (install GRUB).
+	# So please upgrade manually
+	#sudo apt-get --assume-yes upgrade
 	sudo apt-get --assume-yes install byacc flex bison libssl-dev default-jre default-jdk unzip
 	sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
 	sudo apt-get --assume-yes install pkg-config libusb-dev libglib2.0-dev
