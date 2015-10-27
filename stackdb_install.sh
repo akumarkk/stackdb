@@ -293,6 +293,11 @@ stackdb()
     fi
 }
 
+start_vm()
+{
+    sudo QEMU_MEMPATH_PREFIX=/hugetlbfs/qemu        LD_PRELOAD=/local/akumarkk/vmi.obj/target/.libs/libqemuhacks.so.0.0.0     qemu-system-x86_64 -cpu host -m 512 -enable-kvm       -kernel /local/akumarkk/centos/centos5.5-x86_64/boot/vmlinuz-2.6.18-308.el5       -initrd  /local/akumarkk/centos/centos5.5-x86_64/boot/initrd-2.6.18-308-full.el5.img       -append console=ttyS0 -nographic       -net tap,ifname=tap0,script=no -net nic,macaddr=00:AB:CD:33:12:34  -gdb tcp:127.0.0.1:1234,nowait,nodelay,server       -qmp tcp:127.0.0.1:1235,server,nowait -mem-path /hugetlbfs 
+}
+
 if [ $# -lt 1 ]
 then
     echo "Stackdn directory not supplied";
