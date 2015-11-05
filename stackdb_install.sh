@@ -9,7 +9,7 @@ install_utils()
 	sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
 	sudo apt-get --assume-yes install pkg-config libusb-dev libglib2.0-dev
 	sudo apt-get --assume-yes install zlib1g-dev libncurses5-dev
-	sudo apt-get --assume-yes install libffi-dev
+	sudo apt-get --assume-yes install libffi-dev cpu-checker
 	sudo apt-get --assume-yes install libbz2-dev
 	sudo apt-get --assume-yes install swig clips
 	sudo apt-get --assume-yes build-dep clips
@@ -291,6 +291,9 @@ stackdb()
     else
         echo "Successfully build stackdb";
     fi
+
+    # Reserver required number of hugepages
+    echo "vm.nr_hugepages=768" >> /etc/sysctl.conf	
 }
 
 start_vm()
