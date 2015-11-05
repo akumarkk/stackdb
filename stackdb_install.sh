@@ -5,6 +5,7 @@ install_utils()
 	# This does not come with default option (install GRUB).
 	# So please upgrade manually
 	#sudo apt-get --assume-yes upgrade
+	sudo apt-get install qemu-system
 	sudo apt-get --assume-yes install byacc flex bison libssl-dev default-jre default-jdk unzip
 	sudo apt-get --assume-yes install pkg-config libusb-dev m4 autoconf libtool libtool-bin
 	sudo apt-get --assume-yes install pkg-config libusb-dev libglib2.0-dev
@@ -293,7 +294,11 @@ stackdb()
     fi
 
     # Reserver required number of hugepages
-    echo "vm.nr_hugepages=768" >> /etc/sysctl.conf	
+    echo "vm.nr_hugepages=768" >> /etc/sysctl.conf
+
+    # Mount Hugepage FS
+    mkdir /hugetlbfs
+    mount -t hugetlbfs none /hugetlbfs/	
 }
 
 start_vm()
