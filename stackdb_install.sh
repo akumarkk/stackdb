@@ -55,6 +55,7 @@ build_stackdb()
     install_clipssrc;
     install_distorm;
     stackdb;
+    install_libvirt;
 }
 
 
@@ -274,7 +275,10 @@ install_libvirt()
     sudo apt-get install virtinst
     echo "Creating required user accounts"
     useradd libvirt-qemu
+    groupadd libvirt
     usermod -a -G libvirtd,libvirt libvirt-qemu
+
+    echo "Installed all the required libvirt utils..."
 }
 
 stackdb()
