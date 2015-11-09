@@ -268,6 +268,15 @@ install_clipssrc()
     sudo mv -f clipssrc /opt/
 }
 
+install_libvirt()
+{
+    sudo apt-get install qemu-kvm libvirt-bin
+    sudo apt-get install virtinst
+    echo "Creating required user accounts"
+    useradd libvirt-qemu
+    usermod -a -G libvirtd,libvirt libvirt-qemu
+}
+
 stackdb()
 {
     cd $STACKDB_DIR;
@@ -295,6 +304,7 @@ stackdb()
 
     # Reserver required number of hugepages
     echo "vm.nr_hugepages=768" >> /etc/sysctl.conf
+    sysctl -p
 
     # Mount Hugepage FS
     mkdir /hugetlbfs
