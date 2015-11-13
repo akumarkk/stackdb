@@ -272,6 +272,7 @@ install_clipssrc()
 install_libvirt()
 {
     sudo apt-get install qemu-kvm libvirt-bin
+    sudo apt-get install virt-manager
     sudo apt-get install virtinst
     echo "Creating required user accounts"
     useradd libvirt-qemu
