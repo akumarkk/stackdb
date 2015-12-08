@@ -56,6 +56,7 @@ build_stackdb()
     install_distorm;
     stackdb;
     install_libvirt;
+    install_sho_detector;
 }
 
 
@@ -315,6 +316,20 @@ stackdb()
     mkdir /hugetlbfs
     mount -t hugetlbfs none /hugetlbfs/	
 }
+
+install_sho_detector()
+{
+    cd $STACKDB_DIR;
+
+    git clone https://gitlab.flux.utah.edu/akumarkk/shared_lib_detector.git
+    cp -rf shared_lib_detector/src/* ./vmi/asm/moti/
+
+    cd vmi.obj/asm/moti;
+    make && make install;
+
+    echo "Successfully installed SHARED OBJECT DETECTOR"
+}
+
 
 start_vm()
 {
